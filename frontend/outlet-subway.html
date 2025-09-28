@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subway - Menu</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .menu-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .menu-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 200px;
+            position: relative;
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 150px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            gap: 10px;
+        }
+
+        .add-btn, .remove-btn {
+            color: white;
+            background: #d32f2f;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background: #a52727;
+        }
+
+        .remove-btn {
+            background: #555;
+        }
+
+        .remove-btn:hover {
+            background: #333;
+        }
+
+        .item-count {
+            background: #ffcc00;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 40px;
+        }
+
+        .cart-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #781f0b;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .back-button {
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    background: #444;
+    padding: 10px 20px;
+    border-radius: 5px;
+    width: fit-content;
+    position: relative;
+    z-index: 1000; /* Ensure it's above other elements */
+}
+
+    /* Sidebar Styling */
+ .sidebar {
+    background: #2d6312; /* Dark Red */
+    color: white;
+    padding: 20px;
+    width: 200px;
+    height: 100vh;
+}
+
+/* Main Heading */
+h1, .main-heading {
+    color: #d32f2f; /* Bright Red */
+    text-align: center;
+}
+
+/* Hover Effect */
+.sidebar:hover {
+    background: #2d6312; /* Slightly darker red */
+}
+
+/* Existing Buttons */
+.add-btn, .remove-btn {
+    background: #d32f2f; /* Keep buttons matching */
+}
+
+.add-btn:hover {
+    background: #a52727;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Outlets</h2>
+        <ul>
+            <li><a href="outlet-mcdonalds.html">McDonald's</a></li>
+            <li><a href="outlet-kfc.html">KFC</a></li>
+            <li><a href="outlet-subway.html">Subway</a></li>
+            <li><a href="outlet-pizzahut.html">Pizza Hut</a></li>
+            <li><a href="outlet-starbucks.html">Starbucks</a></li>
+        </ul>
+    </div>
+
+    <button class="view-cart-btn" onclick="openCart()">View Cart</button>
+    
+    <h1>Subway Menu</h1>
+    <p>Choose your favorite meal</p>
+
+    <div class="menu-container">
+        <div class="menu-item">
+            <img src="https://images.unsplash.com/photo-1642694358592-e4df77878e6d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Veggie Delight">
+                <h2>Veggie Delight</h2>
+                <p>₹120</p>
+            <div class="button-container">
+                <button class="remove-btn" onclick="removeFromCart('Veggie Delight')">−</button>
+                <p class="item-count" id="count-Veggie Delight">0</p>
+                <button class="add-btn" onclick="addToCart('Veggie Delight', 120)">+</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="https://plus.unsplash.com/premium_photo-1664391899815-b82e21b2e27b?q=80&w=2044&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chicken Teriyaki">
+            <h2>Chicken Teriyaki</h2>
+            <p>₹180</p>
+            <div class="button-container">
+                <button class="remove-btn" onclick="removeFromCart('Chicken Teriyaki')">−</button>
+                <p class="item-count" id="count-Chicken Teriyaki">0</p>
+                <button class="add-btn" onclick="addToCart('Chicken Teriyaki', 180)">+</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="https://images.unsplash.com/photo-1642694358494-3d450f5ea978?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Tuna Sub">
+                <h2>Tandoori Chicken Sub</h2>
+                <p>₹150</p>
+            <div class="button-container">
+                <button class="remove-btn" onclick="removeFromCart('Tandoori Chicken Sub')">−</button>
+                <p class="item-count" id="count-Tandoori Chicken Sub">0</p>
+                <button class="add-btn" onclick="addToCart('Tandoori Chicken Sub', 150)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-container">
+        <div class="menu-item">
+            <img src="https://images.unsplash.com/photo-1642694358592-e4df77878e6d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Veggie Delight">
+            <h2>Peri Peri Sub</h2>
+            <p>₹120</p>
+            <div class="button-container">
+                <button class="remove-btn" onclick="removeFromCart('Peri Peri Sub')">−</button>
+                <p class="item-count" id="count-Peri Peri Sub">0</p>
+                <button class="add-btn" onclick="addToCart('Peri Peri Sub', 120)">+</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="https://plus.unsplash.com/premium_photo-1664472757995-3260cd26e477?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c3Vid2F5JTIwc2FuZHdpY2h8ZW58MHx8MHx8fDA%3D" alt="Tuna Sub">
+                <h2>Cheese and Corn Sub</h2>
+                <p>₹150</p>
+            <div class="button-container">
+                <button class="remove-btn" onclick="removeFromCart('Cheese and Corn Sub')">−</button>
+                <p class="item-count" id="count-Cheese and Corn Sub">0</p>
+                <button class="add-btn" onclick="addToCart('Cheese and Corn Sub', 150)">+</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="https://plus.unsplash.com/premium_photo-1691598048479-593038466a17?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Tuna Sub">
+                <h2>Aloo Tikki Sub</h2>
+                <p>₹150</p>
+            <div class="button-container">
+                <button class="remove-btn" onclick="removeFromCart('Aloo Tikki Sub')">−</button>
+                <p class="item-count" id="count-Aloo Tikki Sub">0</p>
+                <button class="add-btn" onclick="addToCart('Aloo Tikki Sub', 150)">+</button>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    <a href="foodcourt-oberoi.html" class="back-button">Back to Food Court</a>
+
+    <script>
+        function updateCount(name) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let count = cart.filter(item => item.name === name).length;
+            document.getElementById("count-" + name).innerText = count;
+        }
+
+        function addToCart(name, price) {
+    let outlet = "Subway"; // Set outlet name dynamically for each page
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push({ name, price, outlet }); // Include outlet name
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCount(name);
+}
+
+        function removeFromCart(name) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let index = cart.findIndex(item => item.name === name);
+            if (index !== -1) {
+                cart.splice(index, 1);
+                localStorage.setItem("cart", JSON.stringify(cart));
+            }
+            updateCount(name);
+        }
+
+        // Initialize counts on page load
+        document.addEventListener("DOMContentLoaded", function () {
+            updateCount("Peri Peri Sub");
+            updateCount("Cheese and Corn Sub");
+            updateCount("Aloo Tikki Sub");
+        });
+    </script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #f3f3f3, #e0e0e0);
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Sidebar Cart */
+    .cart-sidebar {
+        position: fixed;
+        top: 0;
+        right: -350px;
+        width: 300px;
+        height: 100%;
+        background: white;
+        box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        transition: right 0.3s ease-in-out;
+        overflow-y: auto;
+    }
+    .cart-sidebar.open {
+        right: 0;
+    }
+
+    /* Close Button */
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: transparent;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    /* Cart Items */
+    .cart-items {
+        list-style: none;
+        padding: 0;
+    }
+    .cart-items li {
+        padding: 10px;
+        background: #f9f9f9;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .checkout-button {
+        display: block;
+        margin-top: 15px;
+        background: #28a745;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+    }
+
+    /* View Cart Button */
+    .view-cart-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 12px 16px;
+        background: #00704A;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+</style>
+
+ <div id="cartSidebar" class="cart-sidebar">
+     <button class="close-btn" onclick="closeCart()">&times;</button>
+     <h2>Your Cart</h2>
+     <ul id="cartItems" class="cart-items"></ul>
+     <p>Subtotal: ₹<span id="subtotal">0</span></p>
+     <p>Delivery Charges: ₹30</p>
+     <p>GST & Taxes: ₹40</p>
+     <h3>Total: ₹<span id="total">0</span></h3>
+     <button class="checkout-button" onclick="proceedToCheckout()">Proceed to Checkout</button>
+ </div>
+
+ <script>
+     function openCart() {
+         document.getElementById("cartSidebar").classList.add("open");
+         updateCartUI();
+     }
+
+     function closeCart() {
+         document.getElementById("cartSidebar").classList.remove("open");
+     }
+
+     function updateCartUI() {
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cartList = document.getElementById("cartItems");
+let subtotal = 0;
+let itemMap = {};
+
+cart.forEach((product) => {
+    if (!product.name || product.price === undefined || !product.outlet) return;
+
+    let key = `${product.name} (${product.outlet})`; // Include outlet name
+    if (itemMap[key]) {
+        itemMap[key].count++;
+    } else {
+        itemMap[key] = { price: product.price, count: 1 };
+    }
+});
+
+cartList.innerHTML = "";
+if (Object.keys(itemMap).length === 0) {
+    cartList.innerHTML = "<li>Your cart is empty</li>";
+} else {
+    Object.keys(itemMap).forEach((key) => {
+        let product = itemMap[key];
+
+        let listItem = document.createElement("li");
+        listItem.innerHTML = `${key} (x${product.count}) - ₹${product.price * product.count}`;
+        cartList.appendChild(listItem);
+        subtotal += product.price * product.count;
+    });
+}
+
+let total = subtotal + 30 + 40;
+document.getElementById("subtotal").innerText = subtotal;
+document.getElementById("total").innerText = total;
+}
+
+ 
+     function proceedToCheckout() {
+         let cart = JSON.parse(localStorage.getItem("cart")) || [];
+         localStorage.setItem("checkoutCart", JSON.stringify(cart));
+         window.location.href = "checkout.html";
+     }
+ </script>
+
+</body>
+</html>

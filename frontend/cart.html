@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f3f3f3, #e0e0e0);
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Sidebar Cart */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 300px;
+            height: 100%;
+            background: white;
+            box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            transition: right 0.3s ease-in-out;
+            overflow-y: auto;
+        }
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        /* Close Button */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Cart Items */
+        .cart-items {
+            list-style: none;
+            padding: 0;
+        }
+        .cart-items li {
+            padding: 10px;
+            background: #f9f9f9;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkout-button {
+            display: block;
+            margin-top: 15px;
+            background: #28a745;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        /* View Cart Button */
+        .view-cart-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 16px;
+            background: #00704A;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <button class="view-cart-btn" onclick="openCart()">View Cart</button>
+    
+    <div id="cartSidebar" class="cart-sidebar">
+        <button class="close-btn" onclick="closeCart()">&times;</button>
+        <h2>Your Cart</h2>
+        <ul id="cartItems" class="cart-items"></ul>
+        <p>Subtotal: ₹<span id="subtotal">0</span></p>
+        <p>Delivery Charges: ₹30</p>
+        <p>GST & Taxes: ₹40</p>
+        <h3>Total: ₹<span id="total">0</span></h3>
+        <button class="checkout-button" onclick="proceedToCheckout()">Proceed to Checkout</button>
+    </div>
+
+    <script>
+        function openCart() {
+            document.getElementById("cartSidebar").classList.add("open");
+            updateCartUI();
+        }
+
+        function closeCart() {
+            document.getElementById("cartSidebar").classList.remove("open");
+        }
+
+        function updateCartUI() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let cartList = document.getElementById("cartItems");
+            let subtotal = 0;
+            let itemMap = {};
+    
+            cart.forEach((product) => {
+                if (!product.name || product.price === undefined) return;
+                
+                if (itemMap[product.name]) {
+                    itemMap[product.name].count++;
+                } else {
+                    itemMap[product.name] = { price: product.price, count: 1 };
+                }
+            });
+    
+            cartList.innerHTML = "";
+            if (Object.keys(itemMap).length === 0) {
+                cartList.innerHTML = "<li>Your cart is empty</li>";
+            } else {
+                Object.keys(itemMap).forEach((name) => {
+                    let product = itemMap[name];
+    
+                    let listItem = document.createElement("li");
+                    listItem.innerHTML = `
+                        ${name} (x${product.count}) - ₹${product.price * product.count}
+                    `;
+                    cartList.appendChild(listItem);
+                    subtotal += product.price * product.count;
+                });
+            }
+    
+            let total = subtotal + 30 + 40;
+            document.getElementById("subtotal").innerText = subtotal;
+            document.getElementById("total").innerText = total;
+        }
+    
+        function proceedToCheckout() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            localStorage.setItem("checkoutCart", JSON.stringify(cart));
+            window.location.href = "checkout.html";
+        }
+    </script>
+</body>
+</html>
