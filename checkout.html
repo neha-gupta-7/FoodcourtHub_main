@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="billsplit.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f3f3f3, #e0e0e0);
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .checkout-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2), -10px -10px 20px rgba(255, 255, 255, 0.6);
+            text-align: left;
+        }
+
+        h1, h3 {
+            color: #00704A;
+            text-align: center;
+        }
+
+        .checkout-items {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checkout-items li {
+            padding: 10px;
+            background: #f9f9f9;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 16px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .pay-button {
+    display: inline-block; /* Prevent full-width stretching */
+    width: 250px; /* Adjust width as needed */
+    max-width: 80%; /* Ensures responsiveness */
+    padding: 12px 20px; /* Adjust padding for better shape */
+    font-size: 16px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.pay-button:hover {
+    background: linear-gradient(135deg, #1e7e34, #155d27);
+    transform: scale(1.05);
+}
+
+.pay-button:active {
+    transform: scale(0.98);
+}
+
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <h1>Final Bill</h1>
+        <ul id="checkoutItems" class="checkout-items"></ul>
+        <h3>Total: ₹<span id="checkoutTotal">0</span></h3>
+        <div id="billSplit"></div>
+    </div>
+
+    <script>
+        function loadCheckoutData() {
+            let cart = JSON.parse(localStorage.getItem("checkoutCart")) || [];
+            let checkoutList = document.getElementById("checkoutItems");
+            let total = 0;
+            let groupedItems = {};
+
+            checkoutList.innerHTML = "";
+
+            cart.forEach(item => {
+                if (!item.outlet) item.outlet = "Unknown Outlet";
+                if (!groupedItems[item.outlet]) {
+                    groupedItems[item.outlet] = {};
+                }
+                if (!groupedItems[item.outlet][item.name]) {
+                    groupedItems[item.outlet][item.name] = { price: item.price, count: 1 };
+                } else {
+                    groupedItems[item.outlet][item.name].count++;
+                }
+            });
+
+            for (let outlet in groupedItems) {
+                let outletHeader = document.createElement("li");
+                outletHeader.style.fontWeight = "bold";
+                outletHeader.style.background = "#ddd";
+                outletHeader.style.textAlign = "center";
+                outletHeader.innerText = `The items you got are:`;
+                checkoutList.appendChild(outletHeader);
+
+                for (let name in groupedItems[outlet]) {
+                    let product = groupedItems[outlet][name];
+                    let listItem = document.createElement("li");
+                    listItem.innerText = `${name} (x${product.count}) - ₹${product.price * product.count}`;
+                    checkoutList.appendChild(listItem);
+                    total += product.price * product.count;
+                }
+            }
+
+            let deliveryCharges = 30;
+            let gst = 40;
+            let finalTotal = total + deliveryCharges + gst;
+
+            let summary = document.createElement("li");
+            summary.style.fontWeight = "bold";
+            summary.style.marginTop = "10px";
+            summary.style.textAlign = "center";
+            summary.innerHTML = `
+                <hr>
+                Subtotal: ₹${total} <br>
+                Delivery Charges: ₹${deliveryCharges} <br>
+                GST & Taxes: ₹${gst} <br>
+                <h3>Final Total: ₹${finalTotal}</h3>
+            `;
+            checkoutList.appendChild(summary);
+            document.getElementById("checkoutTotal").innerText = finalTotal;
+        }
+
+        document.addEventListener("DOMContentLoaded", loadCheckoutData);
+    </script>
+    <button id="rzp-button1" class="pay-button">Proceed to Payment</button>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+      var options = {
+        "key": "rzp_test_eN8NXu36n6LTnZ", // Enter the Key ID generated from the Dashboard
+        "amount": "1000",
+        "currency": "INR",
+        "description": "Acme Corp",
+        "image": "https://s3.amazonaws.com/rzp-mobile/images/rzp.png",
+        "prefill":
+        {
+          "email": "gaurav.kumar@example.com",
+          "contact": +919900000000,
+        },
+        config: {
+        "display": {
+          "blocks": {
+            "custom": {
+              "name": "Pay with Apps",
+              "instruments": [
+                {
+                  "method": "app",
+                  "providers": ["cred"
+                  ]
+                }
+              ]
+            }
+          },
+        "sequence": [
+          "block.custom"
+        ],
+        "preferences": {
+          "show_default_blocks": false
+        }
+      }
+    },
+        "handler": function (response) {
+          alert(response.razorpay_payment_id);
+        },
+        "modal": {
+          "ondismiss": function () {
+            if (confirm("Are you sure, you want to close the form?")) {
+              txt = "You pressed OK!";
+              console.log("Checkout form closed by the user");
+            } else {
+              txt = "You pressed Cancel!";
+              console.log("Complete the Payment")
+            }
+          }
+        }
+      };
+      var rzp1 = new Razorpay(options);
+      document.getElementById('rzp-button1').onclick = function (e) {
+        rzp1.open();
+        e.preventDefault();
+      }
+    </script>
+    <script src="billsplit.js"></script>
+    <script src="checkout.js"></script>
+</body>
+</html>

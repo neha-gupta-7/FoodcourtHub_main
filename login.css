@@ -1,0 +1,99 @@
+/* Global Styles for Login */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: url('background.jpg') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Login Form Container */
+.form-container {
+    background: #83211f; /* Updated background color */
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Headings */
+h2 {
+    margin-bottom: 20px;
+    color: white;
+}
+
+/* Labels and Inputs */
+label {
+    display: block;
+    text-align: left;
+    margin-top: 10px;
+    color: white;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #fff; /* Added border */
+    outline: none;
+    background: transparent; /* Transparent input fields */
+    color: white;
+}
+
+/* Buttons */
+button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background: brown; /* Matching button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: darkred;
+}
+
+/* Remember and Forgot Password */
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-top: 10px;
+    color: white;
+    
+}
+
+.remember-forgot a {
+    color: white;
+    text-decoration: none;
+}
+
+.remember-forgot a:hover {
+    text-decoration: underline;
+}
+
+/* Links */
+p {
+    margin-top: 10px;
+    font-size: 12px;
+    color: white;
+}
+
+p a {
+    color: white;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+
